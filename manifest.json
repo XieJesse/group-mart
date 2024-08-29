@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "Group Mart",
+  "description": "Share and add shopping carts to a grocery delivery, and then split the bill accordingly.",
+  "version": "1.0",
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": "group-mart.png"
+  },
+  "content_scripts":[
+    {
+     "matches":["https://www.walmart.com/lists/*"],
+     "js":["lists.js"]
+   },
+    {
+     "matches":["https://www.walmart.com/orders/*"],
+     "js":["orders.js"]
+    }
+  ],
+  "permissions": [
+    "storage"
+  ]
+}
