@@ -37,3 +37,28 @@ btn.addEventListener('click',(e)=>{
     console.log("Cart is set");
   });
 })
+
+document.addEventListener('click', function(e){
+  if (e.target.tagName == "H2" && e.target.innerHTML == "Substituted Items"){
+    const substitutions = {} ;
+    const subs = document.getElementsByClassName("w_al6g mt3") ;
+    // console.log(subs) ;
+    for (var sub of subs) {
+      const subItemNames = sub.getElementsByClassName("w_V_DM") ;
+      const oldItemName = subItemNames[0].innerHTML ;
+      const newItemName = subItemNames[1].innerHTML ;
+      const oldItemPrice = sub.getElementsByClassName("f5 gray b black tr")[0].innerText.substring(1) ;
+      const newItemPrice = sub.getElementsByClassName("f5 b black tr")[1].innerText.substring(1) ;
+      const subItemCounts = sub.getElementsByClassName("pt1 f7 f6-m bill-item-quantity gray") ;
+      const oldItemCount = subItemCounts[0].innerHTML.substring(4) ;
+      const newItemCount = subItemCounts[1].innerHTML.substring(4) ;
+      // console.log(oldItemCount) ;
+      // console.log(newItemCount) ;
+      substitutions[oldItemName] = [oldItemPrice,oldItemCount,newItemName,newItemPrice,newItemCount]
+    }
+    chrome.storage.local.set({ "substitutions" : [substitutions] }).then(() => {
+      console.log("Substitutions are set");
+    });
+    
+  }
+})

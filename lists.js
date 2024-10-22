@@ -1,5 +1,5 @@
 const cart = {} ;
-const bar = document.getElementsByClassName("flex items-center justify-between")[0] ;
+const bar = document.getElementsByClassName("flex items-center justify-between")[1] ;
 console.log(bar) ;
 var btn = document.createElement("button") ;
 bar.appendChild(btn) ;
@@ -12,7 +12,8 @@ var result = {} ;
 btn.addEventListener('click',(e)=>{
   const elements = document.getElementsByClassName("w_kV33 w_LD4J w_mvVb") ;
   // console.log(elements) ;
-  const listName = document.getElementsByClassName("w_kV33 w_LD4J w_mvVb")[(elements.length == 2) ? 1 : 2].innerText ;
+  // const listName = document.getElementsByClassName("w_kV33 w_LD4J w_mvVb")[(elements.length == 2) ? 1 : 2].innerText ;
+  const listName = document.getElementsByClassName("w_V_DM")[1].innerText.substring(7) ;
   // console.log(listName) ;
   const matches = document.getElementsByClassName("pt2 pt4-l bt b--near-white list list-tile") ;
   for (var match of matches) {

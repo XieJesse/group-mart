@@ -7,16 +7,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
 chrome.storage.local.get(null, function(items) {
   var allKeys = Object.keys(items);
-  console.log(allKeys);
+  // console.log(allKeys);
   // var cart = items["cart"][0]
   // console.log(cart) ;
   var listsElement = document.getElementsByClassName("lists")[0] ;
   var num = 0 ;
   var calcSubtotal = 0 ;
   for (var key of allKeys) {
-    console.log(num) ;
+    // console.log(num) ;
     console.log(key) ;
-    if (key == "cart") {
+    if (key == "cart" || key == "substitutions") {
       continue ;
     }
     var listButton = document.createElement('button');
@@ -25,7 +25,7 @@ chrome.storage.local.get(null, function(items) {
     listButton.innerHTML = key ;
     listButton.id = num ;
     listsElement.appendChild(listButton) ;
-    console.log(listButton.className) ;
+    // console.log(listButton.className) ;
     var divElement = document.createElement('div');
     divElement.className = "listContainer" ;
     divElement.id = num ;
@@ -42,7 +42,7 @@ chrome.storage.local.get(null, function(items) {
     newPriceList.style.width = "10%"
     divElement.appendChild(newPriceList) ;
     var list = items[key][0] ;
-    console.log(list) ;
+    // console.log(list) ;
     var subtotal = 0 ;
     for (var [itemName,count] of Object.entries(list)) {
       // create list elements
@@ -51,31 +51,49 @@ chrome.storage.local.get(null, function(items) {
       newItemElement.innerHTML = itemName ;
       newItemList.appendChild(newItemElement) ;
       console.log(itemName) ;
-      console.log(allKeys) ;
+      // console.log(allKeys) ;
+      var name = itemName ;
       if (allKeys.includes("cart")) {
         var newPriceElement = document.createElement('li') ;
         var cartItem = items["cart"][0][itemName] ;
         var price = 0
         if (cartItem != undefined) {
-          price = ((count > cartItem[0] ? cartItem[0] : count) / cartItem[0]) * cartItem[1] ;
+          price = ((Number(count) < Number(cartItem[0]) ? Number(count) : Number(cartItem[0])) / Number(cartItem[0])) * Number(cartItem[1]) ;
           subtotal += price ;
-          console.log(price + " " + count + " " + cartItem[0] + " " + cartItem[1]) ;
+          // console.log(count ) ;
+          // console.log(cartItem[0]) ;
+          // console.log(count < cartItem[0]) ;
+          // console.log(Number(count) < Number(cartItem[0])) ;
+          // console.log(price + " " + count + " " + cartItem[0] + " " + cartItem[1]) ;
+        }
+        else if (items["substitutions"][0][itemName] != undefined) {
+          // console.log(items["substitutions"][0][itemName])
+          // substitutions[oldItemName] = [oldItemPrice,oldItemCount,newItemName,newItemPrice,newItemCount]
+          substitutions = items["substitutions"][0][itemName] ;
+          oldItemCount = substitutions[1] ;
+          newItemPrice = substitutions[3] ;
+          newItemCount = substitutions[4] ;
+          newCount = (newItemCount / oldItemCount) * count ;
+          // count is per cart, cartitem[0] is total
+          price = ((Number(newCount) < Number(newItemCount) ? Number(newCount) : Number(newItemCount)) / Number(newItemCount)) * Number(newItemPrice) ;
+          subtotal += price ;
+          name = substitutions[2] ;
         }
         // console.log(price) ;
         newPriceElement.className = "item" ;
-        var priceString = price.toLocaleString("en", { minimumFractionDigits: 2 }) ;
+        var priceString = price.toFixed(2) ;
         newPriceElement.innerHTML = priceString ;
-        newPriceElement.style.paddingBottom = Math.floor(itemName.length / 60)*14+5 + "px" ;
+        newPriceElement.style.paddingBottom = Math.floor(name.length / 60)*14+5 + "px" ;
         newPriceList.appendChild(newPriceElement) ;
       }
       // console.log(count) ;
     }
     calcSubtotal += subtotal ;
-    listButton.innerHTML += (" - " + subtotal.toLocaleString("en", { minimumFractionDigits: 2 })) ;
+    listButton.innerHTML += (" - " + subtotal.toFixed(2)) ;
     num += 1 ;
   }
 
-  document.getElementById("calcSubtotal").innerHTML += (calcSubtotal.toLocaleString("en", { minimumFractionDigits: 2 })) ;
+  document.getElementById("calcSubtotal").innerHTML += (calcSubtotal.toFixed(2)) ;
   var cartSubtotal = 0 ;
   if (allKeys.includes("cart")) {
     cartSubtotal = items["cart"][1] ;
