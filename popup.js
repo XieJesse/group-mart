@@ -48,9 +48,6 @@ chrome.storage.local.get(null, function(items) {
       // create list elements
       var newItemElement = document.createElement('li');
       newItemElement.className = "item" ;
-      newItemElement.innerHTML = itemName ;
-      newItemList.appendChild(newItemElement) ;
-      console.log(itemName) ;
       // console.log(allKeys) ;
       var name = itemName ;
       if (allKeys.includes("cart")) {
@@ -59,6 +56,10 @@ chrome.storage.local.get(null, function(items) {
         var price = 0
         if (cartItem != undefined) {
           price = ((Number(count) < Number(cartItem[0]) ? Number(count) : Number(cartItem[0])) / Number(cartItem[0])) * Number(cartItem[1]) ;
+          // console.log(price) ;
+          if (isNaN(price)) {
+            price = Number(cartItem[1]) ;
+          }
           subtotal += price ;
           // console.log(count ) ;
           // console.log(cartItem[0]) ;
@@ -80,6 +81,8 @@ chrome.storage.local.get(null, function(items) {
           name = substitutions[2] ;
         }
         // console.log(price) ;
+        newItemElement.innerHTML = name ;
+        newItemList.appendChild(newItemElement) ;
         newPriceElement.className = "item" ;
         var priceString = price.toFixed(2) ;
         newPriceElement.innerHTML = priceString ;
