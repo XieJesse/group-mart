@@ -44,19 +44,22 @@ chrome.storage.local.get(null, function(items) {
     var list = items[key][0] ;
     // console.log(list) ;
     var subtotal = 0 ;
+
     for (var [itemName,count] of Object.entries(list)) {
       // create list elements
       var newItemElement = document.createElement('li');
       newItemElement.className = "item" ;
       // console.log(allKeys) ;
       var name = itemName ;
+      console.log(name) ;
       if (allKeys.includes("cart")) {
         var newPriceElement = document.createElement('li') ;
         var cartItem = items["cart"][0][itemName] ;
+        console.log(cartItem)
         var price = 0
         if (cartItem != undefined) {
           price = ((Number(count) < Number(cartItem[0]) ? Number(count) : Number(cartItem[0])) / Number(cartItem[0])) * Number(cartItem[1]) ;
-          // console.log(price) ;
+          console.log(price) ;
           if (isNaN(price)) {
             price = Number(cartItem[1]) ;
           }
@@ -67,7 +70,7 @@ chrome.storage.local.get(null, function(items) {
           // console.log(Number(count) < Number(cartItem[0])) ;
           // console.log(price + " " + count + " " + cartItem[0] + " " + cartItem[1]) ;
         }
-        else if (items["substitutions"][0][itemName] != undefined) {
+        else if (items["substitutions"] != undefined && items["substitutions"][0][itemName] != undefined) {
           // console.log(items["substitutions"][0][itemName])
           // substitutions[oldItemName] = [oldItemPrice,oldItemCount,newItemName,newItemPrice,newItemCount]
           substitutions = items["substitutions"][0][itemName] ;

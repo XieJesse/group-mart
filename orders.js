@@ -13,7 +13,9 @@ btn.addEventListener('click',(e)=>{
   // console.log(cartTax) ;
   const cartTip = document.getElementsByClassName("w_U9_0 w_U0S3 w_QcqU")[3].innerHTML.substring(1) ;
   // console.log(cartTip) ;
-  const matches = document.getElementsByClassName("pa3 pb0 ph4-m") ;
+  const matches = document.querySelectorAll('[data-testid=category-accordion-Shopped]')[0].getElementsByClassName("pa3 pb0 ph4-m") ;
+  // console.log(document.querySelectorAll('[data-testid=category-accordion-Shopped]')) ;
+  // "w_hhLG w_DZvO w_0_LY dib h-auto mv3 no-underline"
   for (var match of matches) {
     // console.log(match) ;
     var name = match.getElementsByClassName("w_V_DM")[0].innerHTML ;
